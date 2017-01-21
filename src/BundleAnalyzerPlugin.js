@@ -5,7 +5,6 @@ const { bold } = require('chalk');
 
 const getChartData = require('./chartData');
 const Logger = require('./Logger');
-const viewer = require('./viewer');
 
 class BundleAnalyzerPlugin {
 
@@ -19,6 +18,7 @@ class BundleAnalyzerPlugin {
       statsFilename: 'stats.json',
       statsOptions: null,
       logLevel: 'info',
+      reporter: require('../reporter-treemap'),
       // deprecated
       startAnalyzer: true,
       ...opts
@@ -79,13 +79,14 @@ class BundleAnalyzerPlugin {
   }
 
   startAnalyzerServer(stats) {
+    const reporter = this.opts.reporter;
     const bundleDir = this.compiler.outputPath;
     const logger = this.logger;
     const chartData = getChartData({ logger, bundleStats: stats, bundleDir });
 
     if (!chartData) return;
 
-    viewer.startServer(chartData, {
+    reporter.startServer(chartData, {
       openBrowser: this.opts.openAnalyzer,
       port: this.opts.analyzerPort,
       bundleDir,
@@ -94,13 +95,14 @@ class BundleAnalyzerPlugin {
   }
 
   generateStaticReport(stats) {
+    const reporter = this.opts.reporter;
     const bundleDir = this.compiler.outputPath;
     const logger = this.logger;
     const chartData = getChartData({ logger, bundleStats: stats, bundleDir });
 
     if (!chartData) return;
 
-    viewer.generateReport(chartData, {
+    reporter.generateReport(chartData, {
       openBrowser: this.opts.openAnalyzer,
       reportFilename: this.opts.reportFilename,
       bundleDir,

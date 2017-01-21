@@ -1,4 +1,4 @@
-const { startServer } = require('./viewer');
+const { startServer } = require('../reporter-treemap');
 
 module.exports = {
   // Deprecated

@@ -8,7 +8,7 @@ const { bold } = require('chalk');
 
 module.exports = generateReport;
 
-const projectRoot = path.resolve(__dirname, '..', '..');
+const projectRoot = __dirname;
 
 function generateReport(chartData, opts) {
   if (!chartData) {

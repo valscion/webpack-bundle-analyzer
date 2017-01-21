@@ -1,9 +1,9 @@
 # Generated code
 lib
-public
+reporter-treemap/public
 
 # Vendor code
-client/vendor
+reporter-treemap/client/vendor
 
 # Test fixtures
 test/bundles
