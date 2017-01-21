@@ -1,5 +1,6 @@
 const webpack = require('webpack');
-const BundleAnalyzePlugin = require('./lib/BundleAnalyzerPlugin');
+const { resolve } = require('path');
+const BundleAnalyzePlugin = require('../lib/BundleAnalyzerPlugin');
 
 module.exports = opts => {
   opts = {
@@ -12,7 +13,7 @@ module.exports = opts => {
     context: __dirname,
     entry: './client/viewer',
     output: {
-      path: 'public',
+      path: resolve(__dirname, 'public'),
       filename: 'viewer.js',
       publicPath: '/'
     },

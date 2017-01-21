@@ -5,7 +5,8 @@ const { bold } = require('chalk');
 
 const getChartData = require('./chartData');
 const Logger = require('./Logger');
-const viewer = require('./viewer');
+// TODO: Inject this module somehow
+const viewer = require('../reporter-treemap');
 
 class BundleAnalyzerPlugin {
 

@@ -1,9 +1,8 @@
-const path = require('path');
 const express = require('express');
 const opener = require('opener');
 const { bold } = require('chalk');
 
-const projectRoot = path.resolve(__dirname, '..', '..');
+const projectRoot = __dirname;
 
 module.exports = startServer;
 

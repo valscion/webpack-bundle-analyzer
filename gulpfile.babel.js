@@ -8,6 +8,7 @@ const { white, cyan } = gutil.colors;
 
 const NODE_SRC = ['src/**/*.js'];
 const NODE_DEST = resolve('lib');
+const VIEWER_DEST = resolve('reporter-treemap', 'public');
 
 const cli = require('commander')
   .usage('<task> [options]')
@@ -57,7 +58,7 @@ gulp.task('build', ['scripts.viewer', 'scripts.node']);
 
 gulp.task('scripts.viewer', ['scripts.node', 'clean.scripts.viewer'], () => {
   const webpack = require('webpack');
-  const config = require('./webpack.config')({
+  const config = require('./reporter-treemap/webpack.config')({
     env: cli.env,
     analyze: cli.analyze
   });
@@ -82,7 +83,7 @@ gulp.task('scripts.viewer', ['scripts.node', 'clean.scripts.viewer'], () => {
 
 gulp.task('clean.scripts.viewer', () => {
   const del = require('del');
-  return del('public');
+  return del(VIEWER_DEST);
 });
 
 gulp.task('scripts.node', ['clean.scripts.node'], () =>
