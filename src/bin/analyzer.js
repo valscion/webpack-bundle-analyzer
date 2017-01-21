@@ -8,8 +8,6 @@ const commander = require('commander');
 const { magenta } = require('chalk');
 
 const getChartData = require('../chartData');
-// TODO: Inject this module somehow
-const viewer = require('../../reporter-treemap');
 const Logger = require('../Logger');
 
 const program = commander
@@ -40,6 +38,12 @@ const program = commander
     8888
   )
   .option(
+    '-R, --reporter <node package>',
+    'Reporter package that will be used to generate the report.' +
+    br('Default is the built-in `reporter-treemap`.'),
+    require.resolve('../../reporter-treemap')
+  )
+  .option(
     '-r, --report <file>',
     'Path to bundle report file that will be generated in `static` mode.' +
     br('Default is `report.html`.'),
@@ -55,6 +59,7 @@ let {
   mode,
   port,
   report: reportFilename,
+  reporter: reporterModulePath,
   open: openBrowser,
   args: [bundleStatsFile, bundleDir]
 } = program;
@@ -75,6 +80,15 @@ try {
   process.exit(1);
 }
 
+let viewer;
+try {
+  viewer = require(reporterModulePath);
+} catch (err) {
+  console.error(`Couldn't resolve reporter for path "${reporterModulePath}".`);
+  console.error('Reporters should either be installed in node_modules or provided as an absolute path.');
+  process.exit(1);
+}
+
 const logger = new Logger();
 const chartData = getChartData({ logger, bundleStats, bundleDir });
 
@@ -85,6 +99,11 @@ if (!chartData) {
 }
 
 if (mode === 'server') {
+  if (typeof viewer.startServer !== 'function') {
+    console.error(`The given reporter "${reporterModulePath}" does not expose .startServer() ` +
+                  'function and so can\'t be used for server mode reporting.');
+    process.exit(1);
+  }
   viewer.startServer(chartData, {
     openBrowser,
     port,
@@ -92,6 +111,11 @@ if (mode === 'server') {
     logger
   });
 } else {
+  if (typeof viewer.generateReport !== 'function') {
+    console.error(`The given reporter "${reporterModulePath}" does not expose .generateReport() ` +
+                  'function and so can\'t be used for static mode reporting.');
+    process.exit(1);
+  }
   viewer.generateReport(chartData, {
     openBrowser,
     reportFilename: resolve(reportFilename),
