@@ -27,10 +27,8 @@
     "test-dev": "mocha --watch --compilers js:babel-core/register -r babel-polyfill"
   },
   "files": [
-    "public",
     "lib",
-    "src",
-    "views"
+    "src"
   ],
   "dependencies": {
     "acorn": "^4.0.11",
