@@ -8,7 +8,6 @@ const commander = require('commander');
 const { magenta } = require('chalk');
 
 const getChartData = require('../chartData');
-const viewer = require('../viewer');
 const Logger = require('../Logger');
 
 const program = commander
@@ -48,12 +47,17 @@ const program = commander
     '-O, --no-open',
     "Don't open report in default browser automatically."
   )
+  .option(
+    '-R, --reporter <package name>',
+    'The package to use for reporting'
+  )
   .parse(process.argv);
 
 let {
   mode,
   port,
   report: reportFilename,
+  reporter,
   open: openBrowser,
   args: [bundleStatsFile, bundleDir]
 } = program;
@@ -61,6 +65,11 @@ let {
 if (!bundleStatsFile) showHelp('Provide path to Webpack Stats file as first argument');
 if (mode !== 'server' && mode !== 'static') showHelp('Invalid mode. Should be either `server` or `static`.');
 if (mode === 'server' && isNaN(port)) showHelp('Invalid port number');
+if (reporter) {
+  reporter = require(reporter);
+} else {
+  reporter = require('webpack-bundle-analyzer-reporter-treemap');
+}
 
 bundleStatsFile = resolve(bundleStatsFile);
 
@@ -84,14 +93,14 @@ if (!chartData) {
 }
 
 if (mode === 'server') {
-  viewer.startServer(chartData, {
+  reporter.startServer(chartData, {
     openBrowser,
     port,
     bundleDir,
     logger
   });
 } else {
-  viewer.generateReport(chartData, {
+  reporter.generateReport(chartData, {
     openBrowser,
     reportFilename: resolve(reportFilename),
     bundleDir,

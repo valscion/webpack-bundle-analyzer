@@ -5,7 +5,6 @@ const { bold } = require('chalk');
 
 const getChartData = require('./chartData');
 const Logger = require('./Logger');
-const viewer = require('./viewer');
 
 class BundleAnalyzerPlugin {
 
@@ -24,6 +23,10 @@ class BundleAnalyzerPlugin {
       startAnalyzer: true,
       ...opts
     };
+
+    if (!this.opts.reporter) {
+      this.opts.reporter = require('webpack-bundle-analyzer-reporter-treemap');
+    }
 
     this.logger = new Logger(this.opts.logLevel);
   }
@@ -89,7 +92,7 @@ class BundleAnalyzerPlugin {
 
     if (!chartData) return;
 
-    viewer.startServer(chartData, {
+    this.reporter.startServer(chartData, {
       openBrowser: this.opts.openAnalyzer,
       host: this.opts.analyzerHost,
       port: this.opts.analyzerPort,
@@ -108,7 +111,7 @@ class BundleAnalyzerPlugin {
 
     if (!chartData) return;
 
-    viewer.generateReport(chartData, {
+    this.reporter.generateReport(chartData, {
       openBrowser: this.opts.openAnalyzer,
       reportFilename: this.opts.reportFilename,
       bundleDir,
