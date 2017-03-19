@@ -1,7 +1,7 @@
 {
-  "name": "webpack-bundle-analyzer",
+  "name": "webpack-bundle-analyzer-valscion-tmp",
   "version": "3.0.0-alpha.1",
-  "description": "Webpack plugin and CLI utility that represents bundle content as convenient interactive zoomable treemap",
+  "description": "Temporary package for testing plugin separation from UI",
   "author": "Yury Grunin <grunin.ya@ya.ru>",
   "license": "MIT",
   "homepage": "https://github.com/th0r/webpack-bundle-analyzer",
