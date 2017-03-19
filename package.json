@@ -1,6 +1,6 @@
 {
   "name": "webpack-bundle-analyzer-valscion-tmp",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "description": "Temporary package for testing plugin separation from UI",
   "author": "Yury Grunin <grunin.ya@ya.ru>",
   "license": "MIT",
