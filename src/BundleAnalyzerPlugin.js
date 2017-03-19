@@ -92,7 +92,7 @@ class BundleAnalyzerPlugin {
 
     if (!chartData) return;
 
-    this.reporter.startServer(chartData, {
+    this.opts.reporter.startServer(chartData, {
       openBrowser: this.opts.openAnalyzer,
       host: this.opts.analyzerHost,
       port: this.opts.analyzerPort,
@@ -111,7 +111,7 @@ class BundleAnalyzerPlugin {
 
     if (!chartData) return;
 
-    this.reporter.generateReport(chartData, {
+    this.opts.reporter.generateReport(chartData, {
       openBrowser: this.opts.openAnalyzer,
       reportFilename: this.opts.reportFilename,
       bundleDir,
